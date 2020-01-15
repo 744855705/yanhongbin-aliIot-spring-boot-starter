@@ -5,6 +5,9 @@ import com.aliyun.openservices.iot.api.message.MessageClientFactory;
 import com.aliyun.openservices.iot.api.message.api.MessageClient;
 import com.aliyun.openservices.iot.api.message.callback.ConnectionCallback;
 import com.grape.aliiot.config.AliIotProperties;
+import com.grape.aliiot.config.ConnectConfig;
+import com.grape.aliiot.config.enumerate.ConnectSetting;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import com.grape.aliiot.exception.BeanInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,8 @@ public class H2ClientFactory {
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 
+    @Resource(type = ConnectConfig.class)
+    private ConnectConfig connectConfig;
     /**
      * endPoint:  https://${uid}.iot-as-http2.${region}.aliyuncs.com
      * mns endPoint http://${uid}.mns.${region}.aliyuncs.com
@@ -37,12 +42,21 @@ public class H2ClientFactory {
 
     @PostConstruct
     public void init() throws Exception{
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if (subscribeSwitch == null || subscribeSwitch == SubscribeSwitch.OFF) {
+            // 关闭服务端订阅功能,不需要初始化
+            return;
+        }
+        ConnectSetting type = connectConfig.getType();
+        if (type != ConnectSetting.HTTP2) {
+            // 不是HTTP2,不初始化
+            return;
+        }
         if (aliIotProperties != null) {
             endPoint = "https://" + aliIotProperties.getUid() + ".iot-as-http2." + aliIotProperties.getRegionId().toString() + ".aliyuncs.com";
         }else{
             throw new BeanInitException("aliIotProperties 注入失败");
         }
-
         // Bean初始化之后初始化MessageClient
         profile = Profile.getAccessKeyProfile(endPoint, aliIotProperties.getRegionId().toString(), aliIotProperties.getAccessKeyId(), aliIotProperties.getAccessKeySecret());
         client = MessageClientFactory.messageClient(profile);

@@ -2,6 +2,9 @@ package com.grape.aliiot.mns;
 
 import com.aliyun.mns.client.MNSClient;
 import com.grape.aliiot.config.AliIotProperties;
+import com.grape.aliiot.config.ConnectConfig;
+import com.grape.aliiot.config.enumerate.ConnectSetting;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import com.grape.aliiot.exception.BeanInitException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +34,8 @@ public class MnsStarter extends Thread{
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 
+    @Resource(type = ConnectConfig.class)
+    private ConnectConfig connectConfig;
     /**
      * MNSClient 用于开启MNS监听
      */
@@ -53,6 +58,16 @@ public class MnsStarter extends Thread{
 
     @PostConstruct
     public void init() throws Exception{
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if (subscribeSwitch == null || subscribeSwitch == SubscribeSwitch.OFF) {
+            // 关闭服务端订阅功能,不需要初始化
+            return;
+        }
+        ConnectSetting type = connectConfig.getType();
+        if (type != ConnectSetting.MNS) {
+            // 不是MNS,不初始化
+            return;
+        }
         if (mnsClientFactory != null) {
             mnsClients = mnsClientFactory.getMNSClient();
         }else{
@@ -69,7 +84,7 @@ public class MnsStarter extends Thread{
         for (int i = 0; i < mnsManagers.length; i++) {
             mnsManagers[i] = new MnsManager(mnsClients[i], queueNames[i]);
         }
-        log.info("MnsStater初始化完成");
+//        log.info("MnsStater初始化完成");
     }
 
     @Override

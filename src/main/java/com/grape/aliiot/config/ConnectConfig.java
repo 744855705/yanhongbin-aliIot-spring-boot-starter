@@ -1,6 +1,7 @@
 package com.grape.aliiot.config;
 
 import com.grape.aliiot.config.enumerate.ConnectSetting;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +29,17 @@ public class ConnectConfig implements InitializingBean {
      */
     private ConnectSetting type;
 
+    /**
+     * 是否开启服务端订阅
+     */
+    private SubscribeSwitch subscribeSwitch;
+
     @Override
     public void afterPropertiesSet() throws Exception {
+        if (subscribeSwitch == null) {
+            // 默认不开启服务端订阅
+            subscribeSwitch = SubscribeSwitch.OFF;
+        }
         log.info("type:{}",type);
         if (type == null) {
             // 默认使用AMQP连接,需要在阿里云控制台开启消息推送服务

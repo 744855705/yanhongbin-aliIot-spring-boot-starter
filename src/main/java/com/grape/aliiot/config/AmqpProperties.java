@@ -2,6 +2,7 @@ package com.grape.aliiot.config;
 
 import com.grape.aliiot.config.enumerate.ConnectSetting;
 import com.grape.aliiot.config.enumerate.SignMethod;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import com.grape.aliiot.exception.PropertiesNotFoundException;
 import lombok.Data;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class AmqpProperties implements InitializingBean {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
+
     @Resource(type = ConnectConfig.class)
     private ConnectConfig connectConfig;
 
@@ -43,6 +45,13 @@ public class AmqpProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if (subscribeSwitch == null || subscribeSwitch == SubscribeSwitch.OFF) {
+            // 默认不开启服务端订阅
+            // 不开启订阅不需要配置AMQP相关参数
+            return;
+        }
+
         if (connectConfig.getType() == null|| connectConfig.getType() == ConnectSetting.AMQP) {
             // 没有配置的情况下默认使用AMQP
             if (consumerGroupId == null || consumerGroupId.length == 0) {

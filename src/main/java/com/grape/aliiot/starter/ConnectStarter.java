@@ -4,6 +4,7 @@ import com.grape.aliiot.amqp.AmqpStarter;
 import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.config.AmqpProperties;
 import com.grape.aliiot.config.ConnectConfig;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import com.grape.aliiot.http2.MqttManager;
 import com.grape.aliiot.mns.MnsStarter;
 import org.springframework.boot.ApplicationArguments;
@@ -30,6 +31,9 @@ import javax.annotation.Resource;
 @SuppressWarnings("all")
 public class ConnectStarter implements ApplicationRunner {
 
+    @Resource(type = AliIotProperties.class)
+    private AliIotProperties aliIotProperties;
+
     @Resource(type = ConnectConfig.class)
     private ConnectConfig connectConfig;
 
@@ -45,31 +49,35 @@ public class ConnectStarter implements ApplicationRunner {
     @Override
     @SuppressWarnings("all")
     public void run(ApplicationArguments args) throws Exception {
-        switch (connectConfig.getType()) {
-            case MNS:
-                mnsStarter.start();
-                break;
-            case HTTP2:
-                mqttManager.start();
-                break;
-            case AMQP:
-                amqpStarter.startAmqp();
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if(subscribeSwitch == SubscribeSwitch.ON){
+            switch (connectConfig.getType()) {
+                case MNS:
+                    mnsStarter.start();
+                    break;
+                case HTTP2:
+                    mqttManager.start();
+                    break;
+                case AMQP:
+                    amqpStarter.startAmqp();
+            }
         }
     }
 
     @PreDestroy
     public void destroy(){
-        switch (connectConfig.getType()) {
-            case MNS:
-                mnsStarter.destroyMnsService();
-                break;
-            case HTTP2:
-                mqttManager.destroyBean();
-                break;
-            case AMQP:
-                amqpStarter.destroyBean();
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if(subscribeSwitch == SubscribeSwitch.ON){
+            switch (connectConfig.getType()) {
+                case MNS:
+                    mnsStarter.destroyMnsService();
+                    break;
+                case HTTP2:
+                    mqttManager.destroyBean();
+                    break;
+                case AMQP:
+                    amqpStarter.destroyBean();
+            }
         }
     }
-
-
 }

@@ -6,6 +6,9 @@ import com.grape.aliiot.amqp.util.ClientIdUtil;
 import com.grape.aliiot.amqp.util.SignUtil;
 import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.config.AmqpProperties;
+import com.grape.aliiot.config.ConnectConfig;
+import com.grape.aliiot.config.enumerate.ConnectSetting;
+import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import org.apache.qpid.jms.JmsConnection;
 import org.apache.qpid.jms.JmsConnectionListener;
 import org.springframework.context.annotation.Scope;
@@ -48,6 +51,9 @@ public class AmqpStarter {
         }
     }
 
+    @Resource(type = ConnectConfig.class)
+    private ConnectConfig connectConfig;
+
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 
@@ -64,8 +70,20 @@ public class AmqpStarter {
 
     @PostConstruct
     public void init() {
+        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
+        if (subscribeSwitch == null || subscribeSwitch == SubscribeSwitch.OFF) {
+            // 关闭服务端订阅功能,不需要初始化
+            return;
+        }
+
+        if (connectConfig.getType() != ConnectSetting.AMQP) {
+            // 不是AMQP,不初始化
+            return;
+        }
         // 初始化签名生成方法
-        signMethod = amqpProperties.getSignMethod().toString();
+        if (amqpProperties.getSignMethod() != null) {
+            signMethod = amqpProperties.getSignMethod().toString();
+        }
     }
 
     public void startAmqp() throws Exception {
