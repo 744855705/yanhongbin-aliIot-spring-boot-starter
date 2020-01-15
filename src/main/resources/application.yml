@@ -1,18 +1,18 @@
-spring:
-  grape:
-    ali:
-      iot:
-        config:
-          accessKeyId: LTAI4FhwPLppB9JcBKhFv43J
-          accessKeySecret: vUdOu6CKoStFZxG29t35wiwaeUfN36
-          regionId: SHANGHAI
-          uid: 1940213675463409
-#          productKey: a1skKPGCozo
-        connect:
-          type: amqp
-          subscribe-switch: on
-        amqp:
-          consumerGroupId: DEFAULT_GROUP
-#          signMethod: hmacsha1
-server:
-  port: 12021
+#spring:
+#  grape:
+#    ali:
+#      iot:
+#        config:
+#          accessKeyId: LTAI4FhwPLppB9JcBKhFv43J
+#          accessKeySecret: vUdOu6CKoStFZxG29t35wiwaeUfN36
+#          regionId: SHANGHAI
+#          uid: 1940213675463409
+##          productKey: a1skKPGCozo
+#        connect:
+#          type: amqp
+#          subscribe-switch: on
+#        amqp:
+#          consumerGroupId: DEFAULT_GROUP
+##          signMethod: hmacsha1
+#server:
+#  port: 12021

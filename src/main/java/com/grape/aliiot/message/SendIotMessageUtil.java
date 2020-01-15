@@ -7,18 +7,17 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.iot.model.v20180120.*;
 
 import com.grape.aliiot.config.AliIotProperties;
-import com.grape.aliiot.exception.BeanInitException;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+
 import javax.annotation.Resource;
 import java.util.List;
 
 /**
  * Created with IDEA
- * description: 发送命令到阿里云IOT平台
+ * description: 发送命令到阿里云IOT平台工具类
  * @author :YanHongBin
  * @date :Created in 2019/5/11 13:49
  */

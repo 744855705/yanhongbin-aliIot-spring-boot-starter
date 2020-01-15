@@ -2,7 +2,7 @@ package com.grape.aliiot.config.enumerate;
 
 /**
  * Created with IDEA
- * description:
+ * description: Amqp签名方法
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 11:53

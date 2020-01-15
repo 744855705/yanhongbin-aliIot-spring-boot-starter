@@ -2,7 +2,7 @@ package com.grape.aliiot.exception;
 
 /**
  * Created with IDEA
- * description:
+ * description: Bean初始化异常
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 17:12

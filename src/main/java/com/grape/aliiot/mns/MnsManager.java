@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 /**
  * Created with IDEA
- * description:
+ * description:Mns监听启动类
  * @author :YanHongBin
  * @date :Created in 2019/8/6 10:43
  */

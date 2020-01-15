@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Created with IDEA
- * description:
+ * description: 默认消息处理器
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 14:11

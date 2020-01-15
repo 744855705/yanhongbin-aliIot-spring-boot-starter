@@ -2,7 +2,7 @@ package com.grape.aliiot.config.enumerate;
 
 /**
  * Created with IDEA
- * description:
+ * description: 服务端订阅类型
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 17:15

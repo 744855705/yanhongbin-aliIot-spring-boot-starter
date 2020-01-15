@@ -24,8 +24,6 @@ public class MessageProcess {
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 
-//    @Autowired(required = false)
-//    @Resource(name = "messageProcessor")
     @Resource(type = MessageProcessor.class)
     private MessageProcessor messageProcessor;
 

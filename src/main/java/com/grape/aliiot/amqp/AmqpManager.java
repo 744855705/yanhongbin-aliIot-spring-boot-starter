@@ -13,7 +13,7 @@ import java.io.IOException;
 
 /**
  * Created with IDEA
- * description:
+ * description: Amqp 启动类
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 13:27

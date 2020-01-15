@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created with IDEA
- * description:
+ * description: 消息处理器接口,实现此接口,自定义消息处理逻辑,默认实现只会打印消息信息
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 14:07

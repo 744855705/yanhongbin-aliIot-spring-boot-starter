@@ -11,7 +11,7 @@ import java.util.UUID;
 
 /**
  * Created with IDEA
- * description:
+ * description: 获取服务器系统Mac地址
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 12:59

@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 
 /**
  * Created with IDEA
- * description:
+ * description: 启动http2订阅
  * @author :YanHongBin
  * @date :Created in 2019/5/7 14:28
  */

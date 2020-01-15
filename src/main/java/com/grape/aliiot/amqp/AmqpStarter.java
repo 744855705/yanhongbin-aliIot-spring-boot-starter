@@ -26,7 +26,7 @@ import java.util.Hashtable;
 
 /**
  * Created with IDEA
- * description:
+ * description: 多个Amqp监听启动类,根据消费组ID
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 13:45

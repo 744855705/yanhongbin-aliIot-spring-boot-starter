@@ -14,7 +14,7 @@ import java.net.URI;
 
 /**
  * Created with IDEA
- * description: 默认连接监听类
+ * description: 默认Amqp连接监听类
  * @author YanHongBin
  * @date Created in 2020/1/14 11:42
  */

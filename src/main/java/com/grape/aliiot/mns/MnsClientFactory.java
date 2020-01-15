@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 /**
  * Created with IDEA
- * description:
+ * description: MnsClient工具类,根据配置的 productKey[] 获取MnsClient[]
  * @author :YanHongBin
  * @date :Created in 2019/8/6 10:43
  */
@@ -29,7 +29,7 @@ public class MnsClientFactory {
     @Resource(type = ConnectConfig.class)
     private ConnectConfig connectConfig;
     /**
-     * CloudAccount 需要使用单例模式
+     * CloudAccount
      */
     private CloudAccount[] account;
 

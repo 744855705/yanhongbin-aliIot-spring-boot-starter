@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 /**
  * Created with IDEA
- * description:
+ * description: 多个Mns队列监听启动类
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 8:59

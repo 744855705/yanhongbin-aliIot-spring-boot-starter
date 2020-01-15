@@ -7,7 +7,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created with IDEA
- * description:
+ * description:: 签名计算工具类
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 11:46

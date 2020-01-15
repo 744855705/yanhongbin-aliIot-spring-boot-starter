@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created with IDEA
- * description:
+ * description: 服务端订阅配置,是否开启,使用哪种类型订阅
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 17:19

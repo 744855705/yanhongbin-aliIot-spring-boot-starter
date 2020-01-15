@@ -13,7 +13,7 @@ import javax.jms.MessageListener;
 
 /**
  * Created with IDEA
- * description:
+ * description: Amqp Message 处理
  *
  * @author YanHongBin
  * @date Created in 2020/1/14 11:31

@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 
 /**
  * Created with IDEA
- * description:
+ * description: 服务端订阅启动入口类,配置使用服务端订阅则从此处启动
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 17:44
