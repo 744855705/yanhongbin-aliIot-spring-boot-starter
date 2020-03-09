@@ -3,7 +3,7 @@ package com.grape.aliiot.message;
 import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.exception.BeanInitException;
 import com.grape.aliiot.message.service.MessageProcessor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Data;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +12,22 @@ import javax.annotation.Resource;
 
 /**
  * Created with IDEA
- * description: 消息处理,单例Bean
+ * description: 消息处理,多例Bean,适配多个连接的情况下处理消息
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 14:01
  */
 @Component
-@Scope("singleton")
+@Scope("prototype")
+@Data
 public class MessageProcess {
 
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 
-    @Resource(type = MessageProcessor.class)
+    /**
+     * 消息处理器
+     */
     private MessageProcessor messageProcessor;
 
     private String statusTopicHeader;

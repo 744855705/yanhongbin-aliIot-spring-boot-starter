@@ -47,7 +47,7 @@ public class ConnectStarter implements ApplicationRunner {
     private AmqpStarter amqpStarter;
 
     @Override
-    @SuppressWarnings("all")
+//    @SuppressWarnings("all")
     public void run(ApplicationArguments args) throws Exception {
         SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
         if(subscribeSwitch == SubscribeSwitch.ON){
@@ -66,8 +66,8 @@ public class ConnectStarter implements ApplicationRunner {
 
     @PreDestroy
     public void destroy(){
-        SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();
-        if(subscribeSwitch == SubscribeSwitch.ON){
+        if (connectConfig.getSubscribeSwitch() == SubscribeSwitch.ON) {
+            // 如果配置了开启服务端订阅,开启连接
             switch (connectConfig.getType()) {
                 case MNS:
                     mnsStarter.destroyMnsService();

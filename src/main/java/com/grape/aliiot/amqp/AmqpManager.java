@@ -2,6 +2,7 @@ package com.grape.aliiot.amqp;
 
 import com.grape.aliiot.amqp.util.ClientIdUtil;
 import com.grape.aliiot.config.AliIotProperties;
+import com.grape.aliiot.message.service.MessageProcessor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.apache.qpid.jms.JmsConnection;
@@ -50,6 +51,12 @@ public class AmqpManager extends Thread {
      * 连接对象
      */
     private Connection connection;
+
+    /**
+     * 当前连接的消息处理器
+     */
+    private MessageProcessor messageProcessor;
+
     @SneakyThrows
     @Override
     public void run() {

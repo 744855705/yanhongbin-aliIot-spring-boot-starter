@@ -7,12 +7,17 @@ import com.grape.aliiot.amqp.util.SignUtil;
 import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.config.AmqpProperties;
 import com.grape.aliiot.config.ConnectConfig;
+import com.grape.aliiot.config.ConsumerGroupMessageConfig;
 import com.grape.aliiot.config.enumerate.ConnectSetting;
 import com.grape.aliiot.config.enumerate.SubscribeSwitch;
+import com.grape.aliiot.message.MessageProcess;
+import com.grape.aliiot.message.service.MessageProcessor;
+import com.grape.aliiot.utils.SpringUtil;
 import org.apache.qpid.jms.JmsConnection;
 import org.apache.qpid.jms.JmsConnectionListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -51,6 +56,9 @@ public class AmqpStarter {
         }
     }
 
+    @Resource(type = SpringUtil.class)
+    private SpringUtil springUtil;
+
     @Resource(type = ConnectConfig.class)
     private ConnectConfig connectConfig;
 
@@ -62,9 +70,6 @@ public class AmqpStarter {
 
     @Resource(type = JmsConnectionListener.class)
     private JmsConnectionListener jmsConnectionListener;
-
-    @Resource(type = MessageListener.class)
-    private MessageListener messageListener;
 
     private String signMethod;
 
@@ -91,16 +96,32 @@ public class AmqpStarter {
         Context context = getContext();
         ConnectionFactory cf = (ConnectionFactory)context.lookup("SBCF");
         Destination queue = (Destination)context.lookup("QUEUE");
-        String[] consumerGroupIds = amqpProperties.getConsumerGroupId();
-        amqpManagers = new AmqpManager[consumerGroupIds.length];
-        for (int i = 0; i < consumerGroupIds.length; i++) {
+//        String[] consumerGroupIds = amqpProperties.getConsumerGroupId();
+        ConsumerGroupMessageConfig[] consumerGroupMessageConfig = amqpProperties.getConsumerGroupMessageConfig();
+
+        amqpManagers = new AmqpManager[consumerGroupMessageConfig.length];
+        for (int i = 0; i < consumerGroupMessageConfig.length; i++) {
             AmqpManager amqpManager = new AmqpManager();
             amqpManager.setCf(cf);
             amqpManager.setJmsConnectionListener(jmsConnectionListener);
-            amqpManager.setMessageListener(messageListener);
             amqpManager.setQueue(queue);
             amqpManager.setPassword(getPassword(timeStamp));
-            amqpManager.setUsername(getUserName(timeStamp,consumerGroupIds[i]));
+            amqpManager.setUsername(getUserName(timeStamp, consumerGroupMessageConfig[i].getConsumerGroupId()));
+
+            if (!StringUtils.isEmpty(consumerGroupMessageConfig[i].getMessageProcessorBeanId())) {
+                // 配置了MessageProcessor的情况下,使用配置的MessageProcessor
+                amqpManager.setMessageProcessor((MessageProcessor) SpringUtil.getBean(consumerGroupMessageConfig[i].getMessageProcessorBeanId()));
+            }else{
+                // 未配置使用默认的注入的MessageProcessor
+                amqpManager.setMessageProcessor(SpringUtil.getBean(MessageProcessor.class));
+            }
+            // 多例bean 手动注入MessageProcessor
+            MessageProcess messageProcess = SpringUtil.getBean(MessageProcess.class);
+            messageProcess.setMessageProcessor(amqpManager.getMessageProcessor());
+            // 手动生成AmqpMessageListener以匹配不同的MessageProcessor
+            AmqpMessageListener amqpMessageListener = new AmqpMessageListener();
+            amqpMessageListener.setMessageProcess(messageProcess);
+            amqpManager.setMessageListener(amqpMessageListener);
             amqpManagers[i] = amqpManager;
         }
         // 启动线程

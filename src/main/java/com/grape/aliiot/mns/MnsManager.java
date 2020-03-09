@@ -2,11 +2,16 @@ package com.grape.aliiot.mns;
 
 import com.aliyun.mns.client.CloudQueue;
 import com.aliyun.mns.client.MNSClient;
+import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.message.MessageProcess;
+import com.grape.aliiot.message.service.MessageProcessor;
+import com.grape.aliiot.utils.SpringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 
 
 /**
@@ -30,17 +35,33 @@ public class MnsManager extends Thread{
     private MNSClient client;
 
 
+    private String productKey;
 
-    public MnsManager(MNSClient client,String queueName){
+    private AliIotProperties aliIotProperties;
+
+    public MnsManager(MNSClient client,String queueName,String productKey){
         this.client = client;
         this.queueName = queueName;
+        this.productKey = productKey;
     }
 
-    @Resource(type = MessageProcess.class)
+//    @Resource(type = MessageProcess.class)
     private MessageProcess messageProcess;
 
     @Override
     public void run() {
+        // 初始化messageProcess
+        messageProcess = SpringUtil.getBean(MessageProcess.class);
+        HashMap<String, String> messageProcessorBeanIdMap = aliIotProperties.getMessageProcessorBeanId();
+        String messageProcessorBeanId = messageProcessorBeanIdMap.get(productKey);
+        if (StringUtils.isEmpty(messageProcessorBeanId)) {
+            // 未配置消息处理器,使用默认的消息处理器
+            messageProcess.setMessageProcessor(SpringUtil.getBean(MessageProcessor.class));
+        }else{
+            messageProcess.setMessageProcessor((MessageProcessor) SpringUtil.getBean(messageProcessorBeanId));
+        }
+
+
         CloudQueue queue = client.getQueueRef(queueName);
         while (MnsStarter.flag) {
             com.aliyun.mns.model.Message popMsg = null;
@@ -76,4 +97,7 @@ public class MnsManager extends Thread{
         messageProcess.processMessage(topic, payload);
     }
 
+    public void setAliIotProperties(AliIotProperties aliIotProperties) {
+        this.aliIotProperties = aliIotProperties;
+    }
 }

@@ -4,6 +4,7 @@ import com.aliyun.openservices.iot.api.message.api.MessageClient;
 import com.aliyun.openservices.iot.api.message.callback.MessageCallback;
 import com.aliyun.openservices.iot.api.message.entity.Message;
 import com.grape.aliiot.message.MessageProcess;
+import com.grape.aliiot.message.service.MessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
@@ -27,12 +28,18 @@ public class MqttManager extends Thread{
     @Resource(type = MessageProcess.class)
     private MessageProcess messageProcess;
 
+    @Resource(type = MessageProcessor.class)
+    private MessageProcessor messageProcessor;
+
     @Resource(type = H2ClientFactory.class)
     private H2ClientFactory h2ClientFactory;
 
 
     @Override
     public void run() {
+        // 初始化消息处理器
+        // 在http2的模式下订阅消息,不能根据productKey区分消息来源,只能使用一个消息处理器,这里使用默认注入的消息处理器
+        messageProcess.setMessageProcessor(messageProcessor);
         MessageClient messageClient = h2ClientFactory.getMessageClient();
         if (messageClient.isConnected()){
             // 如果已连接,不需要再次开启连接

@@ -76,14 +76,14 @@ public class MnsStarter extends Thread{
         if (aliIotProperties != null) {
             String[] productKey = aliIotProperties.getProductKey();
             queueNames = new String[productKey.length];
+            mnsManagers = new MnsManager[queueNames.length];
             for (int i = 0; i < productKey.length; i++) {
                 queueNames[i] = "aliyun-iot-" + productKey[i];
+                mnsManagers[i] = new MnsManager(mnsClients[i], queueNames[i], productKey[i]);
+                mnsManagers[i].setAliIotProperties(aliIotProperties);
             }
         }
-        mnsManagers = new MnsManager[queueNames.length];
-        for (int i = 0; i < mnsManagers.length; i++) {
-            mnsManagers[i] = new MnsManager(mnsClients[i], queueNames[i]);
-        }
+
 //        log.info("MnsStater初始化完成");
     }
 

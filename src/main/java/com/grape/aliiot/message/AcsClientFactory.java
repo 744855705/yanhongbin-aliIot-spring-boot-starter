@@ -29,6 +29,7 @@ public class AcsClientFactory {
 
     private DefaultAcsClient client;
 
+    @SuppressWarnings("all")
     public DefaultAcsClient getAcsClient(){
         if (client == null) {
             synchronized (AcsClientFactory.class){

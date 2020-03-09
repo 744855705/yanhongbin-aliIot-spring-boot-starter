@@ -7,6 +7,7 @@ import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.iot.model.v20180120.*;
 
 import com.grape.aliiot.config.AliIotProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @Component
 @Scope("singleton")
+@Slf4j
 public class SendIotMessageUtil {
 
     @Resource(type = AliIotProperties.class)
@@ -34,7 +36,7 @@ public class SendIotMessageUtil {
 
     /**
      * 发送request消息
-     * @param request
+     * @param request 要发送的request信息
      * @return
      */
     private <T extends AcsResponse> T sendRequest(AcsRequest<T> request) {
@@ -43,7 +45,7 @@ public class SendIotMessageUtil {
             DefaultAcsClient acsClient = acsClientFactory.getAcsClient();
             response = acsClient.getAcsResponse(request);
         } catch (Exception e) {
-            System.out.println("执行失败：e:" + e.getMessage());
+            log.error("执行失败：e:" + e.getMessage());
         }
         return response;
     }
@@ -61,12 +63,12 @@ public class SendIotMessageUtil {
         request.setTopicFullName(topic);
         request.setQos(1);
         PubResponse response =  sendRequest(request);
-        System.out.println("发送命令:"+msg);
-        if (response != null && response.getSuccess() != false) {
-            System.out.println("发送消息成功！messageId：" + response.getMessageId());
+        log.info("发送命令:"+msg);
+        if (response != null && response.getSuccess()) {
+            log.info("发送消息成功！messageId：" + response.getMessageId());
             return true;
         } else {
-            System.out.println("发送消息失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
+            log.info(response == null ? "未获取到PubResponse" : "发送消息失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
             return false;
         }
     }
@@ -81,13 +83,13 @@ public class SendIotMessageUtil {
         PubBroadcastRequest request = new PubBroadcastRequest();
         request.setProductKey(productKey);
         request.setTopicFullName(topic);
-        System.out.println("发送的命令" + msg);
+        log.info("发送的命令" + msg);
         request.setMessageContent(Base64.encodeBase64String(msg.getBytes()));
         PubBroadcastResponse response = sendRequest(request);
-        if (response != null && response.getSuccess() != false) {
-            System.out.println("发送消息成功！");
+        if (response != null && response.getSuccess()) {
+            log.info("发送消息成功！");
         } else {
-            System.out.println("发送消息失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
+            log.info(response == null ? "未获取到PubBroadcastResponse" : "发送消息失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage());
         }
     }
 
@@ -104,10 +106,10 @@ public class SendIotMessageUtil {
         request.setDescription(productDesc);
         CreateProductResponse response = sendRequest(request);
         if (response != null && response.getSuccess()) {
-            System.out.println("创建产品成功！productKey:" + response.getProductKey());
+            log.info("创建产品成功！productKey:" + response.getProductKey());
             return response.getProductKey();
         } else {
-            System.out.println("创建产品失败！requestId:" + response.getRequestId() + "原因:" + response.getErrorMessage());
+            log.info(response == null ? "未获取到CreateProductResponse" : "创建产品失败！requestId:" + response.getRequestId() + "原因:" + response.getErrorMessage());
         }
         return null;
     }
@@ -124,10 +126,10 @@ public class SendIotMessageUtil {
         request.setDeviceName(deviceName);
         RegisterDeviceResponse response = sendRequest(request);
         if (response != null && response.getSuccess()) {
-            System.out.println("创建设备成功！deviceName:" + response.getData().getDeviceName() + ",deviceSecret:" + response.getData().getDeviceSecret());
+            log.info("创建设备成功！deviceName:" + response.getData().getDeviceName() + ",deviceSecret:" + response.getData().getDeviceSecret());
             return response;
         } else {
-            System.out.println(response == null ? ("未获取到RegistDeviceResponse") : ("创建设备失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage()));
+            log.info(response == null ? ("未获取到RegistDeviceResponse") : ("创建设备失败！requestId:" + response.getRequestId() + "原因：" + response.getErrorMessage()));
             return null;
         }
     }
@@ -155,9 +157,9 @@ public class SendIotMessageUtil {
         createProductTopicRequest.setOperation("ALL");
         CreateProductTopicResponse acsResponse = sendRequest(createProductTopicRequest);
         Boolean success = acsResponse.getSuccess();
-        System.out.println(success);
+        log.info("创建消息标题状态{}",success);
         String errorMessage = acsResponse.getErrorMessage();
-        System.out.println(errorMessage);
+        log.info(errorMessage);
     }
 
     /**
@@ -178,20 +180,20 @@ public class SendIotMessageUtil {
             response = sendRequest(request);
 
             if (response.getSuccess() != null && response.getSuccess()) {
-                System.out.println("产品下设备列表查询成功");
+                log.info("产品下设备列表查询成功");
                 List<QueryDeviceResponse.DeviceInfo> data = response.getData();
                 for (QueryDeviceResponse.DeviceInfo device: data) {
-                    System.out.println(device.getDeviceStatus());
+                    log.info(device.getDeviceStatus());
                 }
             } else {
-                System.out.println("产品下设备列表查询失败");
-                System.out.println(JSON.toJSONString(response));
+                log.info("产品下设备列表查询失败");
+                log.info(JSON.toJSONString(response));
             }
             return response.getData();
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("产品下设备列表查询失败！" + JSON.toJSONString(response.getData()));
+            log.error("产品下设备列表查询失败！" + JSON.toJSONString(response.getData()));
         }
         return null;
     }

@@ -13,10 +13,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 
 /**
  * Created with IDEA
- * description: 阿里云IOT配置,由配置文件导入
+ * description: 阿里云IOT 配置,由配置文件导入
  * @author YanHongBin
  * @date Created in 2020/1/13 10:29
  */
@@ -66,6 +67,13 @@ public class AliIotProperties implements InitializingBean {
      * 产品Key
      */
     private String[] productKey;
+
+
+    /**
+     * 消息处理器beanId配置
+     */
+    private HashMap<String, String> messageProcessorBeanId;
+
 
     @Override
     public void afterPropertiesSet() throws Exception {

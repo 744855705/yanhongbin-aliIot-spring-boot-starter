@@ -36,8 +36,9 @@ public class AmqpProperties implements InitializingBean {
     /**
      * 消费组id,使用AMQP服务端订阅时需要配置
      */
-    private String[] consumerGroupId;
+    private ConsumerGroupMessageConfig[] consumerGroupMessageConfig;
 
+//    private String[] consumerGroupId;
     /**
      * 签名方法：支持hmacmd5，hmacsha1和hmacsha256
      */
@@ -54,8 +55,8 @@ public class AmqpProperties implements InitializingBean {
 
         if (connectConfig.getType() == null|| connectConfig.getType() == ConnectSetting.AMQP) {
             // 没有配置的情况下默认使用AMQP
-            if (consumerGroupId == null || consumerGroupId.length == 0) {
-                throw new PropertiesNotFoundException("无法找到 consumerGroupId 配置信息");
+            if (consumerGroupMessageConfig == null || consumerGroupMessageConfig.length == 0) {
+                throw new PropertiesNotFoundException("无法找到 spring.grape.ali.iot.amqp.consumerGroupMessageConfig 配置信息");
             }
         }
         if (signMethod == null) {
@@ -64,4 +65,7 @@ public class AmqpProperties implements InitializingBean {
         }
         log.info("AmqpProperties;{}",this);
     }
+
+
 }
+

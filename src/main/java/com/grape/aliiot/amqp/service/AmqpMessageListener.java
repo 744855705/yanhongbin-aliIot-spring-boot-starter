@@ -1,13 +1,10 @@
 package com.grape.aliiot.amqp.service;
 
 import com.grape.aliiot.message.MessageProcess;
+import lombok.Data;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 
@@ -18,13 +15,14 @@ import javax.jms.MessageListener;
  * @author YanHongBin
  * @date Created in 2020/1/14 11:31
  */
-@Component
-@Scope("singleton")
+//@Component
+//@Scope("singleton")
+@Data
 public class AmqpMessageListener implements MessageListener {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-    @Resource(type = MessageProcess.class)
+//    @Resource(type = MessageProcess.class)
     private MessageProcess messageProcess;
 
     @SneakyThrows
