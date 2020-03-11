@@ -34,6 +34,10 @@ public class MnsClientFactory {
     private CloudAccount[] account;
 
 
+    /**
+     * 生成Bean时初始化 CloudAccount[]
+     * @throws Exception 发生异常时抛出
+     */
     @PostConstruct
     public void init() throws Exception{
         SubscribeSwitch subscribeSwitch = connectConfig.getSubscribeSwitch();

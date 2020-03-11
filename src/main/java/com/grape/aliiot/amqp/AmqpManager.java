@@ -1,16 +1,12 @@
 package com.grape.aliiot.amqp;
 
-import com.grape.aliiot.amqp.util.ClientIdUtil;
-import com.grape.aliiot.config.AliIotProperties;
 import com.grape.aliiot.message.service.MessageProcessor;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.apache.qpid.jms.JmsConnection;
 import org.apache.qpid.jms.JmsConnectionListener;
 
-import javax.annotation.Resource;
 import javax.jms.*;
-import java.io.IOException;
 
 /**
  * Created with IDEA

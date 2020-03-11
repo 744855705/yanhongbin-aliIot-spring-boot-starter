@@ -27,12 +27,8 @@ import java.util.List;
 @Slf4j
 public class SendIotMessageUtil {
 
-    @Resource(type = AliIotProperties.class)
-    private AliIotProperties aliIotProperties;
-
     @Resource(type = AcsClientFactory.class)
     private AcsClientFactory acsClientFactory;
-
 
     /**
      * 发送request消息
@@ -102,6 +98,7 @@ public class SendIotMessageUtil {
      */
     public String createProduct(String productName, String productDesc) {
         CreateProductRequest request = new CreateProductRequest();
+        request.setNodeType(0);
         request.setProductName(productName);
         request.setDescription(productDesc);
         CreateProductResponse response = sendRequest(request);
@@ -120,7 +117,7 @@ public class SendIotMessageUtil {
      * @param deviceName 充电桩id
      * @return 设备名称
      */
-    private RegisterDeviceResponse registDevice(String productKey,String deviceName) {
+    public RegisterDeviceResponse registDevice(String productKey,String deviceName) {
         RegisterDeviceRequest request = new RegisterDeviceRequest();
         request.setProductKey(productKey);
         request.setDeviceName(deviceName);

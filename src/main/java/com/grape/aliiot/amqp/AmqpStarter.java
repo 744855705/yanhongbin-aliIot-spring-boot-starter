@@ -1,7 +1,6 @@
 package com.grape.aliiot.amqp;
 
 import com.grape.aliiot.amqp.service.AmqpMessageListener;
-import com.grape.aliiot.amqp.service.DefaultJmsConnectionListener;
 import com.grape.aliiot.amqp.util.ClientIdUtil;
 import com.grape.aliiot.amqp.util.SignUtil;
 import com.grape.aliiot.config.AliIotProperties;
@@ -13,7 +12,6 @@ import com.grape.aliiot.config.enumerate.SubscribeSwitch;
 import com.grape.aliiot.message.MessageProcess;
 import com.grape.aliiot.message.service.MessageProcessor;
 import com.grape.aliiot.utils.SpringUtil;
-import org.apache.qpid.jms.JmsConnection;
 import org.apache.qpid.jms.JmsConnectionListener;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -96,7 +94,6 @@ public class AmqpStarter {
         Context context = getContext();
         ConnectionFactory cf = (ConnectionFactory)context.lookup("SBCF");
         Destination queue = (Destination)context.lookup("QUEUE");
-//        String[] consumerGroupIds = amqpProperties.getConsumerGroupId();
         ConsumerGroupMessageConfig[] consumerGroupMessageConfig = amqpProperties.getConsumerGroupMessageConfig();
 
         amqpManagers = new AmqpManager[consumerGroupMessageConfig.length];
@@ -156,7 +153,6 @@ public class AmqpStarter {
     }
 
     public void destroyBean() {
-//        Arrays.asList(amqpManagers).forEach(System.out::println);
         Arrays.asList(amqpManagers).forEach(AmqpManager::close);
     }
 }

@@ -10,7 +10,6 @@ spring:
           productKey: a1skKPGCozo
           message-processor-bean-id:
             a1skKPGCozo: defaultMessageProcessor
-
         connect:
           type: amqp
           subscribe-switch: on

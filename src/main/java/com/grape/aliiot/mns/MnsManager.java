@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 
 
@@ -50,18 +49,7 @@ public class MnsManager extends Thread{
 
     @Override
     public void run() {
-        // 初始化messageProcess
-        messageProcess = SpringUtil.getBean(MessageProcess.class);
-        HashMap<String, String> messageProcessorBeanIdMap = aliIotProperties.getMessageProcessorBeanId();
-        String messageProcessorBeanId = messageProcessorBeanIdMap.get(productKey);
-        if (StringUtils.isEmpty(messageProcessorBeanId)) {
-            // 未配置消息处理器,使用默认的消息处理器
-            messageProcess.setMessageProcessor(SpringUtil.getBean(MessageProcessor.class));
-        }else{
-            messageProcess.setMessageProcessor((MessageProcessor) SpringUtil.getBean(messageProcessorBeanId));
-        }
-
-
+        initMessageProcess();
         CloudQueue queue = client.getQueueRef(queueName);
         while (MnsStarter.flag) {
             com.aliyun.mns.model.Message popMsg = null;
@@ -70,9 +58,8 @@ public class MnsManager extends Thread{
                 popMsg = queue.popMessage(10);
                 if (popMsg != null) {
                     String messageBody = popMsg.getMessageBody();
-                    MnsMessage mnsMessage = MnsMessage.parseMnsMessage(messageBody);
                     // 处理消息
-                    processMessage(mnsMessage);
+                    processMessage(MnsMessage.parseMnsMessage(messageBody));
                     // 处理后从队列中删除消息
                     queue.deleteMessage(popMsg.getReceiptHandle());
                 }
@@ -87,8 +74,25 @@ public class MnsManager extends Thread{
 
     }
 
+    private void initMessageProcess() {
+        // 初始化messageProcess
+        messageProcess = SpringUtil.getBean(MessageProcess.class);
+        HashMap<String, String> messageProcessorBeanIdMap = aliIotProperties.getMessageProcessorBeanId();
+        String messageProcessorBeanId = messageProcessorBeanIdMap.get(productKey);
+        if (StringUtils.isEmpty(messageProcessorBeanId)) {
+            // 未配置消息处理器,使用默认的消息处理器
+            messageProcess.setMessageProcessor(SpringUtil.getBean(MessageProcessor.class));
+        }else{
+            messageProcess.setMessageProcessor((MessageProcessor) SpringUtil.getBean(messageProcessorBeanId));
+        }
+    }
+
+    /**
+     * 处理收到的消息
+     * @param mnsMessage mns消息封装
+     */
     public void processMessage(MnsMessage mnsMessage) {
-        String messageId = mnsMessage.getMessageid();
+        String messageId = mnsMessage.getMessageId();
         String topic = mnsMessage.getTopic();
         String payload = mnsMessage.getPayload();
         log.info("messageId:{}",messageId);
@@ -97,6 +101,10 @@ public class MnsManager extends Thread{
         messageProcess.processMessage(topic, payload);
     }
 
+    /**
+     * 将阿里平台配置信息放入实体类中
+     * @param aliIotProperties 配置信息
+     */
     public void setAliIotProperties(AliIotProperties aliIotProperties) {
         this.aliIotProperties = aliIotProperties;
     }

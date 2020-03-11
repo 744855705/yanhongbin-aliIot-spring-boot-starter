@@ -15,14 +15,11 @@ import javax.jms.MessageListener;
  * @author YanHongBin
  * @date Created in 2020/1/14 11:31
  */
-//@Component
-//@Scope("singleton")
 @Data
 public class AmqpMessageListener implements MessageListener {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
-//    @Resource(type = MessageProcess.class)
     private MessageProcess messageProcess;
 
     @SneakyThrows

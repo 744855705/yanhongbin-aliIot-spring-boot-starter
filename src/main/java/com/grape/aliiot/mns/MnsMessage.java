@@ -32,6 +32,7 @@ public class MnsMessage {
         this.messageBody = messageBody;
     }
 
+
     public String getPayload(){
         return new String(Base64.decodeBase64(String.valueOf(this.messageBody.get("payload"))), StandardCharsets.UTF_8);
     }
@@ -43,7 +44,8 @@ public class MnsMessage {
     public String getTopic(){
         return String.valueOf(this.messageBody.get("topic"));
     }
-    public String getMessageid(){
+
+    public String getMessageId(){
         return String.valueOf(this.messageBody.get("messageid"));
     }
 

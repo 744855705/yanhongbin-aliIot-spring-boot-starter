@@ -34,11 +34,10 @@ public class AmqpProperties implements InitializingBean {
     private ConnectConfig connectConfig;
 
     /**
-     * 消费组id,使用AMQP服务端订阅时需要配置
+     * 消费组id,和该消费组的消息处理器BeanId使用AMQP服务端订阅时需要配置
      */
     private ConsumerGroupMessageConfig[] consumerGroupMessageConfig;
 
-//    private String[] consumerGroupId;
     /**
      * 签名方法：支持hmacmd5，hmacsha1和hmacsha256
      */

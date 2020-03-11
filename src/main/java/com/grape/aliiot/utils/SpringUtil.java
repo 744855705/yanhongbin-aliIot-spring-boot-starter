@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created with IDEA
- * description:
+ * description: 获取Spring Bean工具类
  *
  * @author YanHongBin
  * @date Created in 2020/3/9 10:20
