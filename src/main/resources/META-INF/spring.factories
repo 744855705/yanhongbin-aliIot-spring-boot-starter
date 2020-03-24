@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.grape.aliiot.starter.ConnectStarter
+com.yanhongbin.aliiot.starter.ConnectStarter
