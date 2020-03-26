@@ -20,10 +20,10 @@ import java.util.Date;
  * Created with IDEA
  * description: 启动http2订阅
  *
- * Deprecated: 阿里官方不在使用http2的服务端订阅
- *
  * @author :YanHongBin
  * @date :Created in 2019/5/7 14:28
+ *
+ * @deprecated :阿里官方不在使用http2的服务端订阅
  */
 @Component
 @Scope("singleton")
@@ -35,8 +35,8 @@ public class MqttManager extends Thread{
     @Resource(type = MessageProcess.class)
     private MessageProcess messageProcess;
 
-//    @Resource(type = MessageProcessor.class)
-//    private MessageProcessor messageProcessor;
+    @Resource(type = MessageProcessor.class)
+    private MessageProcessor messageProcessor;
 
     @Resource(type = H2ClientFactory.class)
     private H2ClientFactory h2ClientFactory;
@@ -45,8 +45,8 @@ public class MqttManager extends Thread{
     @Override
     public void run() {
         // 初始化消息处理器
-        // 在http2的模式下订阅消息,不能根据productKey区分消息来源,只能使用一个消息处理器,这里使用默认注入的消息处理器
-        messageProcess.setMessageProcessor(SpringUtil.getBean(MessageProcessor.class));
+        // 在http2的模式下订阅消息,不能区分消息来源,只能使用一个消息处理器,这里使用默认注入的消息处理器
+        messageProcess.setMessageProcessor(messageProcessor);
         MessageClient messageClient = h2ClientFactory.getMessageClient();
         if (messageClient.isConnected()){
             // 如果已连接,不需要再次开启连接
@@ -87,4 +87,11 @@ public class MqttManager extends Thread{
         }
     }
 
+    /**
+     * 重写以标注过时
+     */
+    @Override
+    public synchronized void start() {
+        super.start();
+    }
 }

@@ -14,6 +14,8 @@ public enum ConnectSetting {
     MNS,
     /**
      * 使用阿里iot-client-message 提供的http2长连接支持
+     *
+     * @deprecated :阿里官方不在使用http2的服务端订阅
      */
     @Deprecated
     HTTP2,

@@ -20,8 +20,6 @@ import javax.annotation.Resource;
 @Scope("prototype")
 public class MessageProcess {
 
-
-
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
 

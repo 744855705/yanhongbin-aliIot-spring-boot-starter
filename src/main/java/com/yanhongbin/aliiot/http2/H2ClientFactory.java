@@ -21,10 +21,10 @@ import javax.annotation.Resource;
  * Created with IDEA
  * description: 获取http/2的messageClient
  *
- * Deprecated: 阿里官方不在使用http2的服务端订阅
- *
  * @author :YanHongBin
  * @date :Created in 2019/5/7 9:23
+ *
+ * @deprecated :阿里官方不在使用http2的服务端订阅
  */
 @Component
 @Scope("singleton")

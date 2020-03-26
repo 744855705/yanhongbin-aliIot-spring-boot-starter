@@ -32,7 +32,7 @@ public class SendIotMessageUtil {
     /**
      * 发送request消息
      * @param request 要发送的request信息
-     * @return
+     * @return AcsResponse
      */
     private <T extends AcsResponse> T sendRequest(AcsRequest<T> request) {
         T response = null;
@@ -161,17 +161,17 @@ public class SendIotMessageUtil {
     /**
      * 查询指定产品下的所有设备列表。
      *
-     * @param ProductKey         产品名称  必须
-     * @param PageSize            设备命名  非必须
-     * @param CurrentPage            设备命名  非必须
-     * @return 产品创建信息
+     * @param productKey 产品名称 必须
+     * @param pageSize 每页大小 非必须
+     * @param currentPage 页码 非必须
+     * @return 产品下设备列表
      */
-    public List<QueryDeviceResponse.DeviceInfo> queryDevice(String ProductKey, Integer PageSize, Integer CurrentPage) {
+    public List<QueryDeviceResponse.DeviceInfo> queryDevice(String productKey, Integer pageSize, Integer currentPage) {
         QueryDeviceResponse response =null;
         QueryDeviceRequest request = new QueryDeviceRequest();
-        request.setProductKey(ProductKey);
-        request.setCurrentPage(CurrentPage);
-        request.setPageSize(PageSize);
+        request.setProductKey(productKey);
+        request.setCurrentPage(currentPage);
+        request.setPageSize(pageSize);
         try {
             response = sendRequest(request);
 
@@ -189,7 +189,7 @@ public class SendIotMessageUtil {
 
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("产品下设备列表查询失败！" + JSON.toJSONString(response.getData()));
+            log.error("产品下设备列表查询失败！"+(response!=null?JSON.toJSONString(response.getData()):""));
         }
         return null;
     }

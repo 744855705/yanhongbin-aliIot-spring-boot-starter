@@ -40,7 +40,6 @@ public class ConnectConfig implements InitializingBean {
             // 默认不开启服务端订阅
             subscribeSwitch = SubscribeSwitch.OFF;
         }
-        log.info("type:{}",type);
         if (type == null) {
             // 默认使用AMQP连接,需要在阿里云控制台开启消息推送服务
             type = ConnectSetting.AMQP;

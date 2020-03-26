@@ -6,6 +6,7 @@ import com.yanhongbin.aliiot.config.AliIotProperties;
 import com.yanhongbin.aliiot.message.MessageProcess;
 import com.yanhongbin.aliiot.message.service.MessageProcessor;
 import com.yanhongbin.aliiot.utils.SpringUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -19,9 +20,8 @@ import java.util.HashMap;
  * @author :YanHongBin
  * @date :Created in 2019/8/6 10:43
  */
+@Slf4j
 public class MnsManager extends Thread{
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     /**
      * 队列名
@@ -66,7 +66,7 @@ public class MnsManager extends Thread{
             }catch (Exception e){
                 // 发生异常不终止处理消息
                 e.printStackTrace();
-                System.out.println("处理MNS消息发生异常"+ popMsg);
+                log.info("处理MNS消息发生异常"+ popMsg);
             }
         }
         // flag 为 false 之后,关闭消息队列监听

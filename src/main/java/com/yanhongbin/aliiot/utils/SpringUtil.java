@@ -42,10 +42,6 @@ public class SpringUtil implements ApplicationContextAware {
         throw new RuntimeException("applicationContext注入失败,不能使用getBean方法");
     }
 
-//    public <T> T getBean(String name,Class<T> clazz) {
-//        return (T)applicationContext.getBean(name);
-//    }
-
     /**
      * 根据类型获取Bean
      *

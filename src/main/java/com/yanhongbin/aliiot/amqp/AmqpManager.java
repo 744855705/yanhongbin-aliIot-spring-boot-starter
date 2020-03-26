@@ -27,6 +27,7 @@ public class AmqpManager extends Thread {
      * 连接工厂
      */
     private ConnectionFactory cf;
+
     /**
      * 拼接用户名
      */
@@ -36,6 +37,7 @@ public class AmqpManager extends Thread {
      * 签名生成的密码
      */
     private String password;
+
 
     private Destination queue;
     /**
