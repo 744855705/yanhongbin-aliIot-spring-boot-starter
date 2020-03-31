@@ -1,6 +1,7 @@
 package com.yanhongbin.aliiot.utils;
 
 import org.springframework.beans.BeansException;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Scope;
@@ -56,10 +57,14 @@ public class SpringUtil implements ApplicationContextAware {
         throw new RuntimeException("applicationContext注入失败,不能使用getBean方法");
     }
 
+    /**
+     * 在applicationContext为null的情况下,可以将{@link SpringApplication#run(String...)}方法的返回值设置进来
+     * @param applicationContext applicationContext
+     */
     public static void setApplicationContextIfNull(ApplicationContext applicationContext) {
         if (SpringUtil.applicationContext == null) {
             SpringUtil.applicationContext = applicationContext;
         }
-
     }
+
 }
