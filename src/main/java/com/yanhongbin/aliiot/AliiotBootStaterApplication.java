@@ -13,6 +13,7 @@ public class AliiotBootStaterApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(AliiotBootStaterApplication.class, args);
+        // 防止初始化失败，可不加
         SpringUtil.setApplicationContextIfNull(run);
     }
 

@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created with IDEA
- * description: 获取Spring Bean工具类
+ * description: 获取Spring Bean工具类，
+ * 容器初始化完成后由Spring调用{@link ApplicationContextAware#setApplicationContext(ApplicationContext)}方法完成初始化
  *
  * @author YanHongBin
  * @date Created in 2020/3/9 10:20

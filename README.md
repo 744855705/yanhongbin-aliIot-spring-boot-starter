@@ -17,7 +17,7 @@ spring:
           productKey: ****
           # 消息处理器beanID配置，使用Mns模式时必须，key为产品key，value为消息处理器的对应BeanName
           message-processor-bean-id:
-            a1skKPGCozo: defaultMessageProcessor
+            ****: defaultMessageProcessor
         # 连接相关配置
         connect:
           # 连接类型 支持 amqp，mns，http/2 （http/2 已被废弃）
