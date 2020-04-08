@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
  * @author YanHongBin
  * @date Created in 2020/1/13 14:11
  */
-@Service(value = "messageProcessor")
-@ConditionalOnMissingBean
+//@Service(value = "messageProcessor")
 public class DefaultMessageProcessor implements MessageProcessor {
 
     private Logger log = LoggerFactory.getLogger(getClass());
