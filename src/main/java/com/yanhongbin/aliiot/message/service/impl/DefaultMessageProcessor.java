@@ -3,16 +3,18 @@ package com.yanhongbin.aliiot.message.service.impl;
 import com.yanhongbin.aliiot.message.service.MessageProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Service;
 
 /**
  * Created with IDEA
- * description: 默认消息处理器
+ * description: 默认消息处理器，找不到该bean时使用
  *
  * @author YanHongBin
  * @date Created in 2020/1/13 14:11
  */
 @Service(value = "messageProcessor")
+@ConditionalOnMissingBean
 public class DefaultMessageProcessor implements MessageProcessor {
 
     private Logger log = LoggerFactory.getLogger(getClass());
