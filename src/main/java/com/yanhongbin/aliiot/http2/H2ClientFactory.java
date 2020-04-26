@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 
 /**
  * Created with IDEA
- * description: 获取http/2的messageClient
+ * description: 获取 http/2 的messageClient
  *
  * @author :YanHongBin
  * @date :Created in 2019/5/7 9:23

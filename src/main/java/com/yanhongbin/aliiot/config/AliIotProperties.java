@@ -77,6 +77,7 @@ public class AliIotProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+
         // 指定为Iot套件
         productCode = "Iot";
         if (accessKeyId == null) {

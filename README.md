@@ -1,4 +1,11 @@
 #快速接入阿里iot平台服务端订阅
+以下自定义类需要配置为 Spring Bean 才能自动被使用
+实现com.yanhongbin.aliiot.message.service.MessageProcessor接口，以自定义消息处理器
+
+实现java.util.concurrent.ThreadFactory接口，可自定义线程池中的线程工厂
+
+实现java.util.concurrent.RejectedExecutionHandler接口，可以自定义线程的拒绝策略，也可使用ThreadPoolExecutor自带的策略，配置为Spring Bean即可
+
 ##按照如下方式配置即可使用
 ```
 spring:
@@ -32,4 +39,19 @@ spring:
               message-processor-beanId: messageProcessor
           # 加密方法配置
           signMethod: hmacsha1
+thread:
+  pool:
+    # 是否使用线程池处理消息，不使用则单线程阻塞处理
+    thread-pool-switch: true
+    # 以下相关配置均有默认值
+    # 核心线程数
+    core-pool-size: 4
+    # 最大线程数
+    maximum-pool-size: 4
+    # 线程存活时间
+    keep-alive-time: 0
+    # 时间单位
+    unit: milliseconds
+    # 工作队列大小
+    work-queue-size: 8
 ```

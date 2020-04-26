@@ -1,8 +1,11 @@
 package com.yanhongbin.aliiot.message;
 
 import com.yanhongbin.aliiot.config.AliIotProperties;
+import com.yanhongbin.aliiot.config.ThreadPoolConfig;
 import com.yanhongbin.aliiot.exception.BeanInitException;
 import com.yanhongbin.aliiot.message.service.MessageProcessor;
+import com.yanhongbin.aliiot.message.threadpool.MessageProcessorRunnable;
+import com.yanhongbin.aliiot.message.threadpool.ThreadPoolProxy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +25,9 @@ public class MessageProcess {
 
     @Resource(type = AliIotProperties.class)
     private AliIotProperties aliIotProperties;
+
+    @Resource(type = ThreadPoolConfig.class)
+    private ThreadPoolConfig threadPoolConfig;
 
     /**
      * 消息处理器
@@ -45,8 +51,14 @@ public class MessageProcess {
      * @param payload 消息体
      */
     public void processMessage(String topic,String payload) {
-
+        if (threadPoolConfig.getThreadPoolSwitch()) {
+            // 使用线程池处理消息
+            ThreadPoolProxy.execute(new MessageProcessorRunnable(this,topic,payload));
+            return;
+        }
+        // 不使用线程池处理消息
         if (topic.startsWith(statusTopicHeader)) {
+            // 处理上下线通知
             messageProcessor.processOnOffLineMessage(topic, payload);
             return;
         }

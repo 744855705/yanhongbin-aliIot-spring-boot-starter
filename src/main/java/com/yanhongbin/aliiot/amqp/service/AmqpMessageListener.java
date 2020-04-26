@@ -25,6 +25,7 @@ public class AmqpMessageListener implements MessageListener {
     @SneakyThrows
     @Override
     public void onMessage(Message message) {
+        System.out.println("当前线程："+Thread.currentThread().getName());
         byte[] body = message.getBody(byte[].class);
         String payload = new String(body);
         String topic = message.getStringProperty("topic");

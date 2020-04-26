@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -43,21 +44,20 @@ public class ClientIdUtil {
      * 获取Linux系统Mac地址
      * @return String
      */
-    private static String geacAddressByLinux() throws IOException, InterruptedException {
-        String[] cmd = {"ifconfig"};
-        Process process = Runtime.getRuntime().exec(cmd);
-        process.waitFor();
-        BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        StringBuffer sb = new StringBuffer();
-        String line;
-        while ((line = br.readLine()) != null) {
-             sb.append(line);
-        }
-        String str1 = sb.toString();
+    private static String getAddressByLinux() throws IOException {
+        String str1 = CommandUtil.exec("ifconfig");
         String str2 = str1.split("ether")[1].trim();
         String result = str2.split("txqueuelen")[0].trim();
         log.info("Linux MacAddress is: {}", result);
-        br.close();
+        return result;
+    }
+
+    private static String getAddressByMacOs() throws IOException {
+        String result = CommandUtil.exec("ifconfig en0");
+        String[] ethers = result.split("ether");
+        String[] inet6s = ethers[1].split("inet6");
+        result = inet6s[0].trim();
+        log.info("Mac os MacAddress is: {}", result);
         return result;
     }
 
@@ -96,13 +96,14 @@ public class ClientIdUtil {
         OsType osType = getOsType();
         switch (osType) {
             case LINUX_UNIX:
-                return geacAddressByLinux();
+                return getAddressByLinux();
             case WINDOWS:
                 return getMacAddressByWindows();
             case MACOS:
-                return UUID.randomUUID().toString();
+                return getAddressByMacOs();
             default:
                 return "";
         }
+
     }
 }
