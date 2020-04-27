@@ -26,7 +26,7 @@ public class MessageProcessConfig {
      * @return DefaultMessageProcessor
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(MessageProcessor.class)
     public MessageProcessor messageProcessor() {
         return new DefaultMessageProcessor();
     }
@@ -36,7 +36,7 @@ public class MessageProcessConfig {
      * @return DefaultThreadFactory
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(ThreadFactory.class)
     public ThreadFactory threadFactory(){
         return Executors.defaultThreadFactory();
     }
@@ -46,7 +46,7 @@ public class MessageProcessConfig {
      * @return AbortPolicy
      */
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnMissingBean(RejectedExecutionHandler.class)
     public RejectedExecutionHandler rejectedExecutionHandler() {
         return new ThreadPoolExecutor.AbortPolicy();
     }
