@@ -21,7 +21,7 @@
         <aliyun-sdk-mns.version>1.1.8.8</aliyun-sdk-mns.version>
         <aliyun-java-sdk-iot.version>7.3.0</aliyun-java-sdk-iot.version>
         <commons-codec.version>1.13</commons-codec.version>
-        <fastjson.version>1.2.67_noneautotype2</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <amqp.version>0.47.0</amqp.version>
     </properties>
 
