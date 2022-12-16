@@ -15,13 +15,13 @@
     <description>spring boot stater for aliIot</description>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <slf4j.version>1.7.29</slf4j.version>
         <iot-client-message.version>1.1.5</iot-client-message.version>
         <aliyun-sdk-mns.version>1.1.8.8</aliyun-sdk-mns.version>
         <aliyun-java-sdk-iot.version>7.3.0</aliyun-java-sdk-iot.version>
-        <commons-codec.version>1.10</commons-codec.version>
-        <fastjson.version>1.2.59</fastjson.version>
+        <commons-codec.version>1.13</commons-codec.version>
+        <fastjson.version>1.2.67_noneautotype2</fastjson.version>
         <amqp.version>0.47.0</amqp.version>
     </properties>
 
@@ -139,8 +139,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.6.1</version><!--$NO-MVN-MAN-VER$ -->
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>9</source>
+                    <target>9</target>
                     <encoding>UTF-8</encoding><!-- 指定编码格式，否则在DOS下运行mvn compile命令时会出现莫名的错误，因为系统默认使用GBK编码 -->
                 </configuration>
             </plugin>
