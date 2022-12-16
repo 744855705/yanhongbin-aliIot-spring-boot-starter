@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Iterator;
+import java.util.ServiceLoader;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.Executors;
@@ -26,8 +28,12 @@ public class MessageProcessConfig {
      * @return DefaultMessageProcessor
      */
     @Bean
-    @ConditionalOnMissingBean(MessageProcessor.class)
     public MessageProcessor messageProcessor() {
+        ServiceLoader<MessageProcessor> messageProcessors = ServiceLoader.load(MessageProcessor.class);
+        Iterator<MessageProcessor> iterator = messageProcessors.iterator();
+        if (iterator.hasNext()) {
+            return iterator.next();
+        }
         return new DefaultMessageProcessor();
     }
 

@@ -20,7 +20,7 @@ spring:
           # 连接类型 支持 amqp，mns，http/2 （http/2 已被废弃）
           type: amqp
           # 服务端订阅开关，不配置默认不开启
-          subscribe-switch: on
+          subscribe-switch: off
         # amqp连接信息配置，使用amqp模式时必须
         amqp:
           # 消费组id和对应的消息持利器BeanName配置
